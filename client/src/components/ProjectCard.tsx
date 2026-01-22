@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Github } from "lucide-react";
-import type { Project } from "@shared/schema";
+import type { Project } from "@/data/portfolio-data";
 import { Badge } from "@/components/ui/badge";
 
 interface ProjectCardProps {

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { Skill } from "@shared/schema";
+import type { Skill } from "@/data/portfolio-data";
 import * as SiIcons from "react-icons/si";
 import { Database, Layout, Code, ShoppingBag, Server } from "lucide-react";
 

@@ -1,28 +1,22 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { api, type CreateMessageRequest } from "@shared/routes";
 import { useToast } from "@/hooks/use-toast";
+import { projects, skills } from "@/data/portfolio-data";
 
-// Projects Hook
+// Projects Hook - uses static data
 export function useProjects() {
   return useQuery({
-    queryKey: [api.projects.list.path],
-    queryFn: async () => {
-      const res = await fetch(api.projects.list.path);
-      if (!res.ok) throw new Error("Failed to fetch projects");
-      return api.projects.list.responses[200].parse(await res.json());
-    },
+    queryKey: ["projects"],
+    queryFn: async () => projects,
+    staleTime: Infinity, // Static data never goes stale
   });
 }
 
-// Skills Hook
+// Skills Hook - uses static data
 export function useSkills() {
   return useQuery({
-    queryKey: [api.skills.list.path],
-    queryFn: async () => {
-      const res = await fetch(api.skills.list.path);
-      if (!res.ok) throw new Error("Failed to fetch skills");
-      return api.skills.list.responses[200].parse(await res.json());
-    },
+    queryKey: ["skills"],
+    queryFn: async () => skills,
+    staleTime: Infinity, // Static data never goes stale
   });
 }
 
@@ -31,21 +25,11 @@ export function useContactForm() {
   const { toast } = useToast();
   
   return useMutation({
-    mutationFn: async (data: CreateMessageRequest) => {
-      const res = await fetch(api.contact.submit.path, {
-        method: api.contact.submit.method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      
-      if (!res.ok) {
-        if (res.status === 400) {
-          const error = api.contact.submit.responses[400].parse(await res.json());
-          throw new Error(error.message);
-        }
-        throw new Error("Failed to send message");
-      }
-      return api.contact.submit.responses[201].parse(await res.json());
+    mutationFn: async (data: { name: string; email: string; message: string }) => {
+      // For now, just simulate success since we don't have a backend
+      // You can integrate with a service like Formspree, EmailJS, or Netlify Forms
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return { id: 1, ...data, createdAt: new Date().toISOString() };
     },
     onSuccess: () => {
       toast({

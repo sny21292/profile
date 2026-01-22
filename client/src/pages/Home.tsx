@@ -1,11 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link as ScrollLink } from "react-scroll";
 import { ArrowRight, MapPin, Mail, Github, Linkedin, ChevronDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { api } from "@shared/routes";
-import { insertMessageSchema, type InsertMessage } from "@shared/schema";
+import { z } from "zod";
+
+// Contact form schema
+const contactFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
 import { Navigation } from "@/components/Navigation";
 import { ProjectCard } from "@/components/ProjectCard";
@@ -43,8 +51,8 @@ export default function Home() {
   };
 
   // Form Setup
-  const form = useForm<InsertMessage>({
-    resolver: zodResolver(insertMessageSchema),
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -52,7 +60,7 @@ export default function Home() {
     },
   });
 
-  const onSubmit = (data: InsertMessage) => {
+  const onSubmit = (data: ContactFormData) => {
     contactMutation.mutate(data, {
       onSuccess: () => form.reset(),
     });
