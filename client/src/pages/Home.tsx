@@ -115,9 +115,9 @@ export default function Home() {
             </motion.div>
 
             <motion.div variants={fadeInUp} className="flex gap-6 mt-12">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Github size={24} /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Linkedin size={24} /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Mail size={24} /></a>
+              <a target="_blank" href="https://github.com/sny21292" className="text-muted-foreground hover:text-primary transition-colors"><Github size={24} /></a>
+              <a target="_blank" href="https://www.linkedin.com/in/sunil-kumar-b3408828b/" className="text-muted-foreground hover:text-primary transition-colors"><Linkedin size={24} /></a>
+              <a target="_blank" href="mailto:sunilkumar21292@gmail.com" className="text-muted-foreground hover:text-primary transition-colors"><Mail size={24} /></a>
             </motion.div>
           </motion.div>
 
@@ -129,9 +129,13 @@ export default function Home() {
           >
             <div className="relative w-full aspect-square max-w-[500px] mx-auto">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-full animate-pulse blur-xl" />
-              {/* Profile Image Placeholder - using a gradient/abstract shape for now as no image provided */}
+              {/* Profile Image */}
               <div className="absolute inset-4 bg-secondary/50 backdrop-blur-3xl rounded-full border border-white/10 flex items-center justify-center overflow-hidden">
-                <span className="text-9xl font-display font-bold opacity-10">SK</span>
+                <img 
+                  src="/profile.png" 
+                  alt="Sunil Kumar"
+                  className="w-full h-full object-cover"
+                />
               </div>
               
               {/* Floating tech badges */}
