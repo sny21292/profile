@@ -17,6 +17,7 @@ type ContactFormData = z.infer<typeof contactFormSchema>;
 
 import { Navigation } from "@/components/Navigation";
 import { ProjectCard } from "@/components/ProjectCard";
+import { ProjectDetailModal } from "@/components/ProjectDetailModal";
 import { SkillBar } from "@/components/SkillBar";
 import { useProjects, useSkills, useContactForm } from "@/hooks/use-portfolio";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Project } from "@/data/portfolio-data";
 
 export default function Home() {
   const { data: projects, isLoading: projectsLoading } = useProjects();
@@ -33,6 +35,20 @@ export default function Home() {
 
   // Filter state for portfolio
   const [filter, setFilter] = useState("All");
+  
+  // Modal state for project details
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewMore = (project: Project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
+  };
   
   // Animation variants
   const fadeInUp = {
@@ -273,7 +289,12 @@ export default function Home() {
               </div>
             ) : (
               filteredProjects?.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
+                <ProjectCard 
+                  key={project.id} 
+                  project={project} 
+                  index={index} 
+                  onViewMore={handleViewMore}
+                />
               ))
             )}
           </div>
@@ -442,6 +463,13 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }
